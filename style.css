@@ -74,6 +74,27 @@ figcaption { color: var(--olive); font-size: 0.9rem; margin-top: 0.5rem; }
 ul.method-list { padding-left: 1.4rem; }
 ul.method-list li { margin-bottom: 0.4rem; }
 
+/* ---------- Film entries: poster beside description ---------- */
+.film-entry {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin: 2rem 0;
+}
+.film-entry p { margin: 0; }
+.poster {
+  width: 150px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 3px solid var(--accent);
+}
+@media (max-width: 600px) {
+  .film-entry { gap: 1rem; }
+  .poster { width: 100px; }
+}
+
 /* ---------- D3 chart: grouped bars (my rating vs IMDb) ---------- */
 #chart {
   position: relative;            /* anchors the tooltip */
