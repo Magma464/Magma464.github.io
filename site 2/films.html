@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Top 5 Films | Films</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+</head>
+<body>
+  <header>
+    <span class="site-name">My Top 5 Films</span>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="films.html" class="current">Films</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>The Ranking</h2>
+
+    <p>
+      Here is my top five, from favorite to fifth favorite. Ranking films from different decades
+      and countries is never fair, since a silent-era adventure and a modern satire are trying to do
+      very different things. I ranked them by how strongly each one stays with me, and I explain
+      each choice below.
+    </p>
+
+    <ol class="method-list">
+      <li><strong>Moonstruck</strong> (1987, dir. Norman Jewison)</li>
+      <li><strong>Brother</strong> (1997, dir. Aleksei Balabanov)</li>
+      <li><strong>The Mark of Zorro</strong> (1940, dir. Rouben Mamoulian)</li>
+      <li><strong>Moscow Does Not Believe in Tears</strong> (1980, dir. Vladimir Menshov)</li>
+      <li><strong>I Love Boosters</strong> (2026, dir. Boots Riley)</li>
+    </ol>
+
+    <figure>
+      <img src="images/clapperboard.svg" alt="Illustration of a clapperboard">
+      <figcaption>Lights, camera, ranking.</figcaption>
+    </figure>
+
+    <h2>Why These Five</h2>
+
+    <p>
+      <strong>Moonstruck</strong> follows Loretta Castorini, a Brooklyn widow played by Cher, who
+      agrees to marry one man and then falls for his younger brother, played by Nicolas Cage. It
+      won three Academy Awards, and it is warm, funny, and operatic all at once.
+    </p>
+
+    <p>
+      <strong>Brother</strong> is a crime drama set in 1990s St. Petersburg. Sergei Bodrov Jr. plays
+      Danila Bagrov, a young ex-soldier who goes to live with his older brother and is slowly
+      pulled into a violent underworld. It became a cult hit in Russia and captures the mood of
+      its decade.
+    </p>
+
+    <p>
+      <strong>The Mark of Zorro</strong> stars Tyrone Power as Don Diego Vega, who pretends to be a
+      lazy, foppish aristocrat while secretly fighting a corrupt governor as the masked hero Zorro.
+      Basil Rathbone makes a superb villain, and their final sword duel is still thrilling.
+    </p>
+
+    <p>
+      <strong>Moscow Does Not Believe in Tears</strong> follows three friends who share a Moscow
+      dormitory and tracks their lives over about twenty years. It won the Academy Award for Best
+      Foreign Language Film, and its title comes from a Russian proverb that means you should stop
+      complaining and solve your own problems.
+    </p>
+
+    <p>
+      <strong>I Love Boosters</strong> is a sci-fi crime comedy about a crew of shoplifters who
+      steal high-end fashion. Keke Palmer plays Corvette, a frustrated clothing designer. Director
+      Boots Riley, who also made Sorry to Bother You, turns the heist into a loud and imaginative
+      satire of labor and the fashion industry.
+    </p>
+
+    <h2>My Ratings vs. IMDb</h2>
+    <p>
+      The chart compares my rating for each film with its IMDb user rating, both out of 10. Hover
+      over a bar to see the exact numbers. IMDb scores change slightly over time, and newer films
+      like I Love Boosters can move more than older ones.
+    </p>
+
+    <div class="legend">
+      <span class="legend-item"><span class="swatch mine"></span> My rating</span>
+      <span class="legend-item"><span class="swatch imdb"></span> IMDb rating</span>
+    </div>
+    <div id="chart" aria-label="Grouped bar chart comparing my film ratings with IMDb ratings"></div>
+
+    <section class="contact">
+      <h2>Contact</h2>
+      <ul>
+        <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+        <li>GitHub: <a href="https://github.com/Magma464">github.com/Magma464</a></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/in/your-profile">linkedin.com/in/your-profile</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 [Your Name]</footer>
+
+  <script>
+    // REPLACE the "mine" values with your own ratings (out of 10).
+    // "imdb" values were looked up in November 2026; re-check them on imdb.com before submitting.
+    const films = [
+      { title: "Moonstruck",                        year: 1987, mine: 9.5, imdb: 7.2 },
+      { title: "Brother",                           year: 1997, mine: 9.0, imdb: 7.8 },
+      { title: "The Mark of Zorro",                 year: 1940, mine: 8.5, imdb: 7.5 },
+      { title: "Moscow Does Not Believe in Tears",  year: 1980, mine: 8.0, imdb: 8.0 },
+      { title: "I Love Boosters",                   year: 2026, mine: 7.5, imdb: 6.7 }
+    ];
+
+    const width = 780, rowHeight = 78;
+    const margin = { top: 10, right: 50, bottom: 50, left: 250 };
+    const height = margin.top + margin.bottom + films.length * rowHeight;
+
+    const chart = d3.select("#chart");
+    const svg = chart.append("svg")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("role", "img")
+      .attr("aria-label", "My rating versus IMDb rating for each of five films");
+
+    const tooltip = chart.append("div").attr("class", "tooltip");
+
+    const y0 = d3.scaleBand()
+      .domain(films.map(d => d.title))
+      .range([margin.top, height - margin.bottom])
+      .paddingInner(0.3);
+
+    const y1 = d3.scaleBand()
+      .domain(["mine", "imdb"])
+      .range([0, y0.bandwidth()])
+      .padding(0.08);
+
+    const x = d3.scaleLinear()
+      .domain([0, 10])
+      .range([margin.left, width - margin.right]);
+
+    // vertical gridlines
+    svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(10)
+        .tickSize(-(height - margin.top - margin.bottom))
+        .tickFormat(""));
+
+    // axes
+    svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x).ticks(10));
+
+    svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y0).tickSize(0).tickPadding(12))
+      .call(g => g.select(".domain").remove());
+
+    svg.append("text")
+      .attr("class", "axis-label")
+      .attr("x", (margin.left + width - margin.right) / 2)
+      .attr("y", height - 10)
+      .attr("text-anchor", "middle")
+      .text("Rating (out of 10)");
+
+    // bars
+    const groups = svg.selectAll(".film")
+      .data(films)
+      .join("g")
+      .attr("class", "film")
+      .attr("transform", d => `translate(0,${y0(d.title)})`);
+
+    function showTip(event, d, label, value) {
+      const box = chart.node().getBoundingClientRect();
+      tooltip
+        .html(`<strong>${d.title}</strong> (${d.year})<br>${label}: ${value.toFixed(1)} / 10`)
+        .style("left", `${event.clientX - box.left + 14}px`)
+        .style("top", `${event.clientY - box.top - 10}px`)
+        .classed("visible", true);
+    }
+    const hideTip = () => tooltip.classed("visible", false);
+
+    ["mine", "imdb"].forEach(key => {
+      const label = key === "mine" ? "My rating" : "IMDb";
+
+      groups.append("rect")
+        .attr("class", `bar ${key}`)
+        .attr("x", x(0))
+        .attr("y", y1(key))
+        .attr("height", y1.bandwidth())
+        .attr("width", d => x(d[key]) - x(0))
+        .on("mousemove", (event, d) => showTip(event, d, label, d[key]))
+        .on("mouseleave", hideTip);
+
+      groups.append("text")
+        .attr("class", "bar-label")
+        .attr("x", d => x(d[key]) + 6)
+        .attr("y", y1(key) + y1.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "start")
+        .text(d => d[key].toFixed(1));
+    });
+  </script>
+</body>
+</html>

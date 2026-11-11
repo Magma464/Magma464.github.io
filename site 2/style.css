@@ -11,9 +11,9 @@
   --series-imdb: burlywood;      /* IMDb ratings */
 }
 
-/* ---------- Typography (custom fonts via Google Fonts in <head>) ---------- */
+/* ---------- Typography (Georgia throughout) ---------- */
 body {
-  font-family: "Work Sans", Arial, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--ink);
@@ -22,7 +22,7 @@ body {
 }
 h1, h2, h3 {
   color: var(--olive);
-  font-family: "Bitter", Georgia, serif;
+  font-family: Georgia, "Times New Roman", serif;
   line-height: 1.2;
 }
 h1 { font-size: 2.8rem; margin: 0 0 1rem; }
@@ -43,7 +43,7 @@ header {
   gap: 0.5rem;
 }
 .site-name {
-  font-family: "Bitter", Georgia, serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--paper);
@@ -85,7 +85,7 @@ ul.method-list li { margin-bottom: 0.4rem; }
 #chart svg { display: block; width: 100%; height: auto; }
 #chart text {
   fill: var(--ink);
-  font-family: "Work Sans", Arial, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 13px;
 }
 #chart .axis path,
@@ -104,7 +104,6 @@ ul.method-list li { margin-bottom: 0.4rem; }
 #chart .bar-label {
   font-size: 12px;
   font-weight: 600;
-  text-anchor: middle;
 }
 
 /* legend (build with .legend > .legend-item > .swatch) */
