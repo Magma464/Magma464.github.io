@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Daily Cup | Brewing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+</head>
+<body>
+  <header>
+    <span class="site-name">The Daily Cup</span>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="brewing.html" class="current">Brewing</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>How I Brew at Home</h2>
+
+    <p>
+      Brewing coffee is really the practice of extraction: hot water pulls flavor compounds out of
+      ground beans, and the goal is to stop at the right moment. Pull too little and the cup tastes
+      sour and thin. Pull too much and it turns bitter and harsh. Every brewing method is simply a
+      different way of controlling that balance, and each one rewards a slightly different kind of
+      attention.
+    </p>
+
+    <figure>
+      <img src="images/pour-over.svg" alt="Illustration of a pour-over coffee dripper sitting on a glass mug">
+      <figcaption>A pour-over setup, my most-used method.</figcaption>
+    </figure>
+
+    <p>
+      I rotate between four methods depending on my mood and how much time I have. Pour-over is my
+      weekday favorite because it produces a clean, bright cup and lets me taste the character of
+      the beans. The French press is better for slow weekends, since it gives a heavier body and
+      needs very little effort. My AeroPress comes along when I travel, and I turn to cold brew
+      during summer, when I prepare a large batch overnight and enjoy it all week.
+    </p>
+
+    <p>
+      Water matters more than most beginners expect, since a cup of coffee is mostly water. If your
+      tap water tastes strongly of chlorine or minerals, your coffee will too. I use filtered water
+      and a simple kitchen timer, and I adjust the grind size a little at a time until the cup tastes
+      balanced. Small, patient changes have taught me more than any expensive piece of equipment.
+    </p>
+
+    <h2>My Brewing Habits</h2>
+    <p>
+      The chart below shows how many cups I made with each method over a recent week. (This is
+      sample data; replace the numbers in the script with your own.)
+    </p>
+    <div id="chart" aria-label="Bar chart of cups brewed per method"></div>
+
+    <h2>Tips That Improved My Coffee</h2>
+    <ul class="method-list">
+      <li>Weigh the coffee and water instead of guessing with scoops.</li>
+      <li>Grind the beans right before brewing.</li>
+      <li>Use water just off the boil, around 200&deg;F.</li>
+      <li>Change only one variable at a time when experimenting.</li>
+      <li>Keep notes so you can repeat the cups you love.</li>
+    </ul>
+
+    <section class="contact">
+      <h2>Contact</h2>
+      <ul>
+        <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+        <li>GitHub: <a href="https://github.com/your-username">github.com/your-username</a></li>
+        <li>LinkedIn: <a href="https://www.linkedin.com/in/your-profile">linkedin.com/in/your-profile</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 [Your Name]</footer>
+
+  <script>
+    // Sample data: replace with your own
+    const data = [
+      { method: "Pour-over", cups: 9 },
+      { method: "French press", cups: 4 },
+      { method: "AeroPress", cups: 3 },
+      { method: "Cold brew", cups: 5 }
+    ];
+
+    const width = 640, height = 320;
+    const margin = { top: 20, right: 20, bottom: 50, left: 45 };
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("width", "100%")
+      .attr("role", "img")
+      .attr("aria-label", "Cups brewed per method this week");
+
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.method))
+      .range([margin.left, width - margin.right])
+      .padding(0.25);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.cups)]).nice()
+      .range([height - margin.bottom, margin.top]);
+
+    svg.selectAll(".bar")
+      .data(data)
+      .join("rect")
+      .attr("class", "bar")
+      .attr("x", d => x(d.method))
+      .attr("y", d => y(d.cups))
+      .attr("width", x.bandwidth())
+      .attr("height", d => y(0) - y(d.cups))
+      .append("title")
+      .text(d => `${d.method}: ${d.cups} cups`);
+
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y).ticks(5));
+
+    svg.append("text")
+      .attr("x", -(height / 2))
+      .attr("y", 14)
+      .attr("transform", "rotate(-90)")
+      .attr("text-anchor", "middle")
+      .text("Cups per week");
+  </script>
+</body>
+</html>
